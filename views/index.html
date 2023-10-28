@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Micro Chat</title>
+        <link rel="shortcut icon" href="favicon_{{ .Theme }}.ico" />
+        <link rel="stylesheet" href="style_{{ .Theme }}.css">
+        <script src="/htmx.min.js"></script>
+    </head>
+    <body">
+        {{ block "style-selector" .Styles }}
+        <form hx-put="/style" hx-trigger="input from:#preferred" hx-swap="innerHtml">
+            <select name="preferred" id="preferred">
+                {{ range . }}
+                {{ if .Selected }}
+                <option value="{{.Name}}" selected="selected">{{.Name}}</option>
+                {{ else }}
+                <option value="{{.Name}}">{{.Name}}</option>
+                {{ end }}
+                {{ end }}
+            </select>
+        </form>
+        {{ end }}
+        <!-- TODO github link -->
+        <h1>Micro Chat</h1>
+        <p>This is a chat application made using the <a href="https://go.dev">go programming language</a> and <a href="https://www.htmx.org">htmx</a>.
+        The source code is licensed under GPL v2 and available on <a href="https://www.github.com">github</a>.</p>
+        <table>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>
+                        {{ block "name" .Name }}
+                        <table hx-target="this" hx-swap="outerHTML">
+                            <tr>
+                                <td>{{ . }}</td>
+                                <td><button hx-get="/name/edit">Edit</button></td>
+                            </tr>
+                        </table>
+                        {{ end }}
+                    </th>
+                    <th>
+                        {{ block "input" . }}
+                        <form hx-post="/messages" hx-swap="innerHtml">
+                            <input name="message" type="text" autofocus="autofocus" autocomplete="off">
+                            <button type="submit">Submit</button>
+                        </form>
+                        {{end}}
+                    </th>
+                </tr>
+            </thead>
+            <tbody hx-get="/messages"
+                hx-trigger="every 1s"
+                hx-swap="innerHtml"
+                > 
+                {{ block "messages" .OutBox}}
+                {{ range . }}
+                <tr>
+                    <td>{{ .TimeStr }}</td>
+                    <td>{{ .FromName }}</td>
+                    <td>{{ .Content }}</td>
+                </tr>
+                {{ end }}
+                {{ end }}
+            </tbody>
+        </table>
+    </body>
+</html>
+
+
+{{ define "name/edit" }}
+<form hx-put="/name" hx-target="this" hx-swap="outerHTML">
+    <table>
+        <tr>
+            <td>
+                <input type="text" name="name" value="{{ . }}" autocomplete="off">
+            </td>
+            <td>
+                <button>Submit</button>
+            </td>
+            <td>
+                <button hx-get="/name" >Cancel</button>
+            </td>
+        </tr>
+    </table>
+</form>
+{{ end }}

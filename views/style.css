@@ -1,0 +1,80 @@
+:root {
+{{ if eq . "brutal"}}
+    --primary: #000000;
+    --primary-variant: #333333;
+    --secondary: #00ff00;
+    --secondary-variant: #ffff00;
+    --secondary-variant2: #99ff99;
+{{ else }}
+    --primary: lightblue;
+    --primary-variant: white;
+    --secondary: #000000;
+    --secondary-variant: #000000;
+    --secondary-variant2: #0000aa;
+{{ end }}
+}
+
+body {
+    background-color: var(--primary);
+    color: var(--secondary);
+}
+
+h1 {
+    font-size: 36pt;
+    text-align: center;
+}
+
+select {
+    background-color: var(--secondary-variant2);
+    -webkit-text-fill-color: var(--primary);
+    font-weight: bold;
+    border: none;
+}
+
+p {
+    text-align: center;
+}
+
+a {
+    color: var(--secondary-variant2);
+    font-weight: bold;
+}
+
+table {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+tr {
+    background-color: var(--primary);
+}
+
+th {
+    color: var(--secondary-variant2);
+    /* font-size: 16pt; */
+}
+
+td {
+    color: var(--secondary-variant);
+}
+
+/* form { */
+/* } */
+
+button {
+    background-color: var(--secondary-variant2);
+    border: 0;
+    color: var(--primary);
+    font-weight: bold;
+}
+
+input {
+    background-color: var(--primary-variant);
+    color: var(--secondary-variant);
+    border: 0;
+    outline: none;
+}
+
+input:focus {
+    border: solid 1px var(--secondary-variant);
+}
